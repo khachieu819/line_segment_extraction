@@ -1,0 +1,9 @@
+<launch>
+
+  <include file="$(find vkistbot)/launch/vkistbot_gazebo.launch" />
+  <rosparam file="$(find vkistbot)/config/vkistbot_control.yaml" command="load"/>
+  
+  <node name="control_spawn" pkg="controller_manager" type="spawner" respawn="false" ns="vkistbot"
+        output="screen" args="joint_state_controller left_wheel_controller right_wheel_controller front_wheel_controller"/>
+
+</launch>

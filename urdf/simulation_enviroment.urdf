@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="simulation_enviroment">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.22092 0.21488 -0.20417"
+        rpy="0 0 0" />
+      <mass
+        value="1203.3" />
+      <inertia
+        ixx="897.71"
+        ixy="-21.988"
+        ixz="-1.7899E-14"
+        iyy="2691.4"
+        iyz="3.0082E-14"
+        izz="3555.4" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://vkistbot/meshes/simulation_enviroment.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0.6 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://vkistbot/meshes/simulation_enviroment.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

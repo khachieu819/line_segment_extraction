@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="layout1" command="$(find xacro)/xacro --inorder '$(find vkistbot)/urdf/simulation_enviroment.urdf'" />
+
+          <!--spawn a robot in gazebo world-->
+
+    
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+  
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false"
+  output="screen" args="-urdf -param layout1 -model layout -x 0 -y 0 -z 0.0"/>
+</launch>

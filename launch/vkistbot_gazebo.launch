@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find vkistbot)/urdf/vkistbot.urdf'" />
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false"/>
+    </node>
+
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find vkistbot)/worlds/simulation_world.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+
+          <!--spawn a robot in gazebo world-->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false"
+  output="screen" args="-urdf -param robot_description -model vkistbot -x 0 -y 0 -z 0.2"/>
+  
+    <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false"
+  output="screen" args="-urdf -param layout1 -model layout -x 0 -y 0 -z 0.0"/> -->
+</launch>
