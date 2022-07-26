@@ -6,7 +6,7 @@
 #include<nav_msgs/OccupancyGrid.h>
 #include <unistd.h>
 
-u_int16_t Np = 100;
+u_int16_t Np = 720;
 u_int8_t P_min = 10;
 u_int8_t S_num = 6;
 float L_min = 60;
@@ -44,7 +44,7 @@ struct seed_seg{
 };
 
 u_int16_t beam_quantity;
-point lidar_data[100];
+point lidar_data[720];
 sensor_msgs::LaserScan sensor_data;
 pos pose;
 bool flag1 = false;
@@ -66,8 +66,8 @@ void get_lidar_data(const sensor_msgs::LaserScan::ConstPtr& scan){
     for(int i=0; i < beam_quantity; i++){
         float angle = scan->angle_min + i * scan->angle_increment;
         // ROS_INFO("%f",angle);
-        double x = double(scan->ranges[i]*cos(angle)*100 + pose.linear.x);
-        double y = double(scan->ranges[i]*sin(angle)*100 + pose.linear.y);
+        double x = double(scan->ranges[beam_quantity-i-1]*cos(angle)*100 + pose.linear.x);
+        double y = double(scan->ranges[beam_quantity-i-1]*sin(angle)*100 + pose.linear.y);
         // ROS_INFO("%f",x);
         lidar_data[i].x = x;
         lidar_data[i].y = y;
@@ -107,7 +107,7 @@ int main(int argc, char** argv){
             if(break_point > (Np - P_min)){
                 overlap_region(list_of_seed, map);
                 makeline(list_of_seed, map);
-                break_point = 0;
+                // break_point = 0;
                 end = clock();
                 time_use = (double)(end - start) / CLOCKS_PER_SEC;
                 ROS_INFO("%f", time_use);
@@ -284,8 +284,10 @@ void makeline(std::vector<seed_seg> &list_point_seed, nav_msgs::OccupancyGrid &m
     cell b;
     std::vector<cell> line;         // testing
     for(int i=0; i<list_point_seed.size(); i++){
-        a.x = lidar_data[list_point_seed[i].start].x/map.info.resolution;
-        a.y = lidar_data[list_point_seed[i].start].y/map.info.resolution;
+        // a.x = lidar_data[list_point_seed[i].start].x/map.info.resolution;
+        // a.y = lidar_data[list_point_seed[i].start].y/map.info.resolution;
+        a.x = int((pow(list_point_seed[i].temp.b,2)*lidar_data[list_point_seed[i].start].x - list_point_seed[i].temp.a*list_point_seed[i].temp.b*lidar_data[list_point_seed[i].start].y - list_point_seed[i].temp.a*list_point_seed[i].temp.c)/(pow(list_point_seed[i].temp.a,2)+pow(list_point_seed[i].temp.b,2))/map.info.resolution);
+        a.y = int((pow(list_point_seed[i].temp.a,2)*lidar_data[list_point_seed[i].start].y - list_point_seed[i].temp.a*list_point_seed[i].temp.b*lidar_data[list_point_seed[i].start].x - list_point_seed[i].temp.b*list_point_seed[i].temp.c)/(pow(list_point_seed[i].temp.a,2)+pow(list_point_seed[i].temp.b,2))/map.info.resolution);
         // b.x = lidar_data[list_point_seed[i].end].x/map.info.resolution;
         // b.y = lidar_data[list_point_seed[i].end].y/map.info.resolution;
         // dang do tinh x_s va y_s doan nay
